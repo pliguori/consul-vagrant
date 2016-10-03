@@ -1,9 +1,10 @@
 #
 # Configure a cluster of 3 consul servers
-# 
+#
 - hosts: consul_servers
-  user: vagrant
-  sudo: true
+  become_user: root
+  become: true
+  become_method: sudo
 
   pre_tasks:
     - name: setup hosts file so the servers can ref one another by hostname
@@ -26,14 +27,14 @@
         consul_client_address: '0.0.0.0'}
 
 # install an agent locally that will join the 3 node server cluster.
-- hosts: localhost
-  connection: local
-  
-  roles:
-
-    - {role: sgargan.consul,
-        consul_supervisor_enabled: true,
-        consul_dir: "{{local_agent_dir}}",
-        consul_node_name: "{{ansible_hostname}}",
-        consul_join: ['11.0.0.2', '11.0.0.3', '11.0.0.4'],
-        consul_client_address: '0.0.0.0'}
+#- hosts: localhost
+#  connection: local
+#
+#  roles:
+#
+#    - {role: sgargan.consul,
+#        consul_supervisor_enabled: true,
+#        consul_dir: "{{local_agent_dir}}",
+#        consul_node_name: "{{ansible_hostname}}",
+#        consul_join: ['11.0.0.2', '11.0.0.3', '11.0.0.4'],
+#        consul_client_address: '0.0.0.0'}
